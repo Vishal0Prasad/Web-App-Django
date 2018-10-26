@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^medical_leave$',views.medical_leave, name = 'medical_leave'),
     url(r'^sendmessage$',views.sendMessage, name = 'sendmessage'),
     url(r'^applyleave$',views.applyLeave, name = 'applyLeave'),
+    url(r'^searchDoctors$',views.searchDoctors, name = 'searchDoctors'),
+    url(r'^bookAppointment$',views.bookAppointment, name = 'bookAppointment'),
+    url(r'^makeAppointment$',views.makeAppointment, name = 'makeAppointment'),
 ]

@@ -31,13 +31,13 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link active">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
             <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
@@ -47,13 +47,13 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-              <i class="fas fa-user"></i> Welcome {{request.user}}
+              <i class="fas fa-user"></i> Welcome {{ request.user }}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item" target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                 <i class="fas fa-cog"></i> Important Contacts
               </a>
             </div>
@@ -95,7 +95,7 @@
     <center><div class="container">
       <div class="row">
         <div class="col-md-9">
-          <a href="home.html" class="btn btn-light btn-block" style="width: 300px; margin-left: -530px; margin-bottom: 20px">
+          <a href="{% url 'hostel:hostel_dashboard' %}" class="btn btn-light btn-block" style="width: 300px; margin-left: -530px; margin-bottom: 20px">
             <i class="fas fa-arrow-left"></i> Back To Hostel Dashboard
           </a>
           <div class="card">
@@ -107,27 +107,63 @@
               <thead class="thead-dark" style="border: 1px solid white;">
               <tr>
               <th> Complaint form </th>
-              <th></th> 
-              <th></th> 
+              <th></th>
+              <th></th>
               </tr>
               </thead>
-           </table>
+
            <!-- Apply appropriate post request here -->
-          <form action="complaint-ack.html">  
-            <div style="margin-top: 60px">
-            Subject:<br>
-            </div>
-            <input type="text" name="title" placeholder = "Enter subject" style="width: 400px;"><br>
-            <div style="margin-top: 60px">
-            Complaint:<br>
-            </div>
-            <textarea name="complaint" placeholder = "Enter complaint" cols = "5" style="height: 100px; width: 400px"></textarea>
-            <br>
-            <br>
-            <input type="submit" class = "btn btn-primary" value="File Complaint" style="margin-bottom: 50px">
+          <form action="{% url 'hostel:addComplaint' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <tr>
+              <td>
+
+            Subject: &ensp; &nbsp;&nbsp;&nbsp;&nbsp;&ensp; &nbsp;&nbsp;&nbsp;&nbsp;
+             {{ form.subject }}
+
+           </td>
+           <td></td>
+           <td></td>
+         </tr>
+         <tr>
+           <td>
+
+            Room Number: &ensp;
+
+            {{ form.room_no }}
+
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+            <td>
+            Complaint: &ensp; &nbsp;&nbsp;&nbsp;&nbsp;&ensp; &nbsp;&nbsp;&nbsp;&nbsp;
+
+            {{ form.complaint }}
+          </td>
+            <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Upload Image: &ensp;
+            <input id="id_image" type="file" class="" name="image">
+          </td>
+          <td></td>
+          <td></td>
+          </tr>
+          <tr>
+            <td colspan="3">
+          <input type="submit" class = "btn btn-primary" value="File Complaint">
+        </td>
+        <td></td>
+        <td></td>
+          </tr>
           </form>
-           
-          
+           </table>
+
+
           </div>
         </div>
 

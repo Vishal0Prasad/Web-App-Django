@@ -31,13 +31,13 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link active">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
             <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
@@ -47,13 +47,13 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-              <i class="fas fa-user"></i> Welcome {{request.user}}
+              <i class="fas fa-user"></i> Welcome {{ request.user }}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item" target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                 <i class="fas fa-cog"></i> Important Contacts
               </a>
             </div>
@@ -92,13 +92,14 @@
   </p>
   </section>
   <section id="posts">
-    <center><div class="container">
+  <div class="container">
       <div class="row">
         <div class="col-md-9">
           <div class="card">
 
           	<!--Announcements-->
-            <table class="table" style="margin-bottom: 100px" >
+            <!--<div style=" overflow-y: scroll;">-->
+            <table class="table">
             	<col width="20">
             	<col width="700">
             	<col width="300">
@@ -110,19 +111,40 @@
                   <th></th>
                 </tr>
                 <tr style="text-align: center">
-                  <th>#</th>
+                  <th>No.</th>
                   <th>Announcement</th>
                   <th>Date</th>
                 </tr>
               </thead>
+
               <tbody>
-               	   <!-- INSERT JINJA TEMPLATES HERE -->
+                <tr>
+                  <td colspan="3">
+                    <div style="width: 800px; overflow-y: scroll;height:{{ scrollL_announce }};">
+                    {% if h_announce %}
+                    <table style="width: 100%; padding: 0px;">
+                       {% for announce_data in h_announce %}
+            <tr>
+              <td align="center">{{ announce_data.id }} </td>
+              <td align="center">{{ announce_data.announcement }}</td>
+              <td align="center">{{ announce_data.timestamp }} </td>
+            </tr>
+            {% endfor %}
+
+                    </table>
+
+                    {% endif %}
+                  </div>
+                  </td>
+                </tr>
               </tbody>
+
             </table>
+          <!--</div>-->
 
             <!--Self-Help Issues-->
-        
-            <table class="table" style="margin-bottom: 70px" >
+            <!--<div style=" overflow-y: scroll;">-->
+            <table class="table">
             	<col width="200">
             	<col width="700">
             	<col width="300">
@@ -133,42 +155,111 @@
                   <th></th>
                 </tr>
                 <tr style="text-align: center">
-                  <th>#</th>
+                  <th>Student Id</th>
                   <th>Issue</th>
                   <th>Date</th>
                 </tr>
               </thead>
+
               <tbody>
                <!-- INSERT JINJA TEMPLATES HERE -->
-              </tbody>
-            </table>
+               <tr>
+                  <td colspan="3">
+                    <div style="width: 800px; overflow-y: scroll;height:{{ scrollL_self }};">
+               {% if self_help %}
+               <table style="width: 100%; padding: 0px;">
+               {% for help_data in self_help %}
+            <tr>
+              <td align="center">{{ help_data.student_id }}</td>
+              <td align="center">{{ help_data.issue }}</td>
+              <td align="center">{{ help_data.timestamp }} </td>
+            </tr>
+           {% endfor %}
 
-          
+                    </table>
+
+                    {% endif %}
+                  </div>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+          <!--</div>-->
+
+
           </div>
         </div>
 
+<div class="col-md-3">
+  <div class="card" style=" border: 0px;">
+   <!-- <div class="card" style=" border: 0px;">
+      <h4>Courier History</h4>
+    </div>-->
+    <table class="table table-striped" style="width: 100%; padding: 0px;  border: 0px;">
+      <tr style="width: 100%; padding: 0px;  border: 0px;">
+        <td style="width: 100%; padding: 0px;">
+          <table style="width: 132%; padding: 0px;  border: 0px;">
+            <thead class="thead-dark" style="width: 100%; padding: 0px;">
+
+                  <tr style="width: 60%; padding: 0px;">
+                <th style="width: 15px; font-weight:normal;" colspan="3">Courier History</th>
+
+                <th style="width: 60px; font-weight:normal;"></th>
+              </tr>
+
+              <tr style="width: 60%; padding: 0px;">
+                <th style="width: 15px; font-weight:normal;">#</th>
+                <th style="width: 60px; font-weight:normal;">Agent</th>
+                <th style="width: 60px; font-weight:normal;">Ref No.</th>
+                <th style="width: 60px; font-weight:normal;">Date</th>
+              </tr>
+            </thead>
+
+          </table>
+        </td>
+      </tr>
+      <tr style="width: 100%; padding: 0px;">
+        <td style="width: 100%; padding: 0px;">
+          <div style="overflow-y: scroll; width: 132%; height:{{ scrollL_courier }}">
+            {% if courier_data %}
+            <table style="width: 100%; padding: 0px;">
+                {% for data in courier_data %}
+                <tr>
+                  <td style="width: 55px; font-weight:normal;">{{ courier_data.idcourrier }}</td>
+                  <td style="width: 132px; font-weight:normal;">{{ courier_data.delivery_agent }}</td>
+                  <td style="width: 132px; font-weight:normal;">{{ courier_data.courrier_ref_no }}</td>
+                  <td style="width: 132px; font-weight:normal;">{{ courier_data.timestamp }}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                {% endif %}
+          </div>
+        </td>
+      </tr>
+</table>
+
       </div>
     </div>
-  </center>
   </section>
 
   	<div class = "row">
   		<div class = "col-md-4">
   		<div class="card-body ">
-  			  <a href = "complaint.html">
+  			  <a href = "{% url 'hostel:form_complaint' %}">
               <button class= "btn btn-primary" style="margin-left: 200px">
               	File complaint
-              </button>	
+              </button>
               </a>
             </div>
         </div>
         <div class = "col-md-4">
-         <div class="card-body ">l
-         	  <a href = "leave.html">
+         <div class="card-body ">
+         	  <a href = "{% url 'hostel:leave_form' %}">
               <button class= "btn btn-primary" style="margin-left: 200px">
               	Apply for leave
               </button>
-              </a>	
+              </a>
             </div>
         </div>
      </div>

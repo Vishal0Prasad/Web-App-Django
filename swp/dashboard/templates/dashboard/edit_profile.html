@@ -22,32 +22,32 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav">
           <li class="nav-item px-2">
-            <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link active">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
-            <a href="{% url 'orders:orders_index' %}" class="nav-link active">Order</a>
+            <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
           </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-              <i class="fas fa-user"></i> Welcome {{request.user}}
+              <i class="fas fa-user"></i> Welcome {{ request.user }}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item"  target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                 <i class="fas fa-cog"></i> Important Contacts
               </a>
             </div>
@@ -102,13 +102,17 @@
               <h4>Edit Profile</h4>
             </div>
             <div class="card-body">
-              <form action="{% url 'dashboard:profile' %}" method="post">
+              <form action="{% url 'dashboard:profile' %}" method="post" id="post-form">
                 {% csrf_token %}
                   {{ form.as_p }}
                   <!-- {{ stu_form.as_p }} -->
                   <div class="form-group">
                     <label for="bio">Bio</label>
-                    <textarea class="form-control" name="editor">Let people know you.</textarea>
+                    {% if bio %}
+                      <textarea class="form-control" name="editor">{{bio}}</textarea>
+                      {% else %}
+                      <textarea class="form-control" name="editor">Let People know You.</textarea>
+                    {% endif %}
                   </div>
                 <input type="Submit" value="Update" class="btn btn-primary btn-block">
               </form>
@@ -159,6 +163,12 @@
 
     CKEDITOR.replace('editor1');
   </script>
+  <!-- <script>
+  $('#post-form').on('submit', function(event){
+    event.preventDefault();
+    console.log("form submitted!")  // sanity check
+  });
+  </script> -->
 </body>
 
 </html>

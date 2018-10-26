@@ -31,16 +31,16 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
-            <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
+            <a href="{% url 'orders:orders_index' %}" class="nav-link active">Order</a>
           </li>
         </ul>
 
@@ -50,10 +50,10 @@
               <i class="fas fa-user"></i> Welcome {{request.user}}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item" target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                 <i class="fas fa-cog"></i> Important Contacts
               </a>
             </div>
@@ -92,121 +92,147 @@
   </p>
   </section>
   <section id="posts">
-    <div class="container" align="center">
+    <!-- <div class="container" align="center"> -->
       <div class="row">
-        <div class="col-md-9">
-          <div class="card">
-            <div class="card-header">
-              <h4>Orders</h4>
-            </div>
-            <table align="left"class="table table-striped" align="left">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Books</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th>Quantity</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for book in books %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{book.item_name}}</td>
-                  <td></td>
-                  <td><select name="books" form="order">
-                      {% with ' '|center:book.quantity as range %}
-                      {{range}}
-                      {% for value in range %}
-                        <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
-                      {% endfor %}
-                      {% endwith %}
-                    </select>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-
-            <!--Stationary-->
-            <div class="card-header">
-            </div>
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Stationary</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th></th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for stationary in stationary %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{stationary.item_name}}</td>
-                  <td></td>
-                  <td><select name="stationary" form="order">
-                      {% with ''|center:stationary.quantity as range %}
-                      {% for value in range %}
-                        <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
-                      {% endfor %}
-                      {% endwith %}
-                    </select>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-
-            <!--Others-->
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Others</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th></th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for other in others %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{other.item_name}}</td>
-                  <td></td>
-                  <td><select name="others" form="order">
-                      {% with ''|center:other.quantity as range %}
-                      {{range}}
-                      {% for value in range %}
-                        <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
-                      {% endfor %}
-                      {% endwith %}
-                    </select>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+        <div class="col-md-7" style="width:800px; margin:0 auto;">
+        <div class="card" style=" border: 0px;align:left;">
+          <div class="card-header" style="width: 103%;">
+            <h4><center>Books</center></h4>
           </div>
+          <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+            <tr style="width: 100%; padding: 0px;  border: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <table style="width: 129%; padding: 0px;  border: 0px;">
+                  <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                    <tr style="width: 100%; padding: 0px;">
+                      <th style="width: 55px; font-weight:normal;">#</th>
+                      <th style="width: 150px; font-weight:normal;">Title</th>
+                      <th style="align:right; width: 100px; font-weight:normal;">Quantity</th>
+                    </tr>
+                  </thead>
+
+                </table>
+              </td>
+            </tr>
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <div style="overflow-y: scroll; width: 129%; height: 200px">
+                  <table style="width: 100%; padding: 0px;">
+                      {% for book in books %}
+                      <tr>
+                        <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                        <td style="width: 150px; font-weight:normal;">{{ book.item_name }}</td>
+                        <td style="align:right; width: 100px; font-weight:normal;"><select class="btn btn-secondary" data-toggle="dropdown" form="order" name="books">
+                            {% with ''|center:book.quantity as range %}
+                            {{range}}
+                            {% for value in range %}
+                              <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                            {% endfor %}
+                            {% endwith %}
+                          </select></td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- </div> -->
+
+        <!-- <div class="col-md-7"> -->
+        <div class="card" style=" border: 0px;align:left;">
+          <div class="card-header" style="width: 103%;">
+            <h4><center>Stationary</center></h4>
+          </div>
+          <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+            <tr style="width: 100%; padding: 0px;  border: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <table style="width: 129%; padding: 0px;  border: 0px;">
+                  <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                    <tr style="width: 100%; padding: 0px;">
+                      <th style="width: 55px; font-weight:normal;">#</th>
+                      <th style="width: 150px; font-weight:normal;">Title</th>
+                      <th style="align:right; width: 100px; font-weight:normal;">Quantity</th>
+                    </tr>
+                  </thead>
+
+                </table>
+              </td>
+            </tr>
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <div style="overflow-y: scroll; width: 129%; height: 200px">
+                  <table style="width: 100%; padding: 0px;">
+                      {% for stationary in stationary %}
+                      <tr>
+                        <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                        <td style="width: 150px; font-weight:normal;">{{ stationary.item_name }}</td>
+                        <td style="align:right; width: 100px; font-weight:normal;"><select class="btn btn-secondary" data-toggle="dropdown" form="order" name="stationary">
+                            {% with ''|center:stationary.quantity as range %}
+                            {{range}}
+                            {% for value in range %}
+                              <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                            {% endfor %}
+                            {% endwith %}
+                          </select></td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- </div> -->
+
+        <!-- <div class="col-md-7"> -->
+        <div class="card" style=" border: 0px;align:left;">
+          <div class="card-header" style="width: 103%;">
+            <h4><center>Others</center></h4>
+          </div>
+          <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+            <tr style="width: 100%; padding: 0px;  border: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <table style="width: 129%; padding: 0px;  border: 0px;">
+                  <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                    <tr style="width: 100%; padding: 0px;">
+                      <th style="width: 55px; font-weight:normal;">#</th>
+                      <th style="width: 150px; font-weight:normal;">Title</th>
+                      <th style="align:right; width: 100px; font-weight:normal;">Quantity</th>
+                    </tr>
+                  </thead>
+
+                </table>
+              </td>
+            </tr>
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <div style="overflow-y: scroll; width: 129%; height: 200px">
+                  <table style="width: 100%; padding: 0px;">
+                      {% for other in others %}
+                      <tr>
+                        <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                        <td style="width: 150px; font-weight:normal;">{{ other.item_name }}</td>
+                        <td style="align:right; width: 100px; font-weight:normal;"><select class="btn btn-secondary" data-toggle="dropdown" form="order" name="others">
+                            {% with ''|center:other.quantity as range %}
+                            {{range}}
+                            {% for value in range %}
+                              <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                            {% endfor %}
+                            {% endwith %}
+                          </select></td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- </div> -->
+      <!-- </div> -->
+
           {% if items %}
             <div class="card-body">
               <form action="{% url 'orders:place_order' %}" method="post" id="order">
@@ -222,118 +248,99 @@
           </div>
           {% endif %}
         </div>
+      <!-- </div> -->
+      <!-- </div> -->
+        <div class="col-md-7" style="width:800px; margin:0 auto;">
+        <div class="card" style=" border: 0px;">
+          <div class="card-header" style="width: 100%;">
+            <h4><center>Orders List</center></h4>
+            {% if user_orders %}
+              <h4>Total Cost: {{ total_cost }}</h4>
+            {% endif %}
+          </div>
+          <table class="table table-striped" style="width: 100%; padding: 0px;  border: 0px;">
+            <tr style="width: 100%; padding: 0px;  border: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <table style="width: 100%; padding: 0px;  border: 0px;">
+                  <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                    <tr style="width: 100%; padding: 0px;">
+                      <th style="width: 55px; font-weight:normal;">#</th>
+                      <th style="width: 132px; font-weight:normal;">Name</th>
+                      <th style="width: 132px; font-weight:normal;">Date</th>
+                      <th style="width: 132px; font-weight:normal;">Quantity</th>
+                      <th style="width: 132px; font-weight:normal;">Cancel</th>
+                    </tr>
+                  </thead>
 
-        <div class="col-md-3">
-  <!-- <div class="card"> -->
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>
-            Orders
-          </th>
-          <th>List</th><th></th><th></th><th></th>
-        </tr>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Quantity</th>
-          <th>Cancel</th>
-        </tr>
-      </thead>
-      <tbody>
-          {% if user_orders %}
-            {% for orders in user_orders %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              <td>{{ orders.item.item_name }}</td>
-              <td>{{ orders.created_at }}</td>
-              <td>{{ orders.quantity }}</td>
-              <td><a href="{% url 'orders:delete_order' orders.pk %}" class="btn btn-danger btn-block">
-               Cancel
-              </a></td>
+                </table>
+              </td>
             </tr>
-            {% endfor %}
-            <!-- <td>Order 1</td>
-            <td>11/10 11:00</td>
-            <td><a href="#" class="btn btn-danger btn-block">
-             Cancel
-            </a></td>
-          </tr> -->
-          {% endif %}
-          <!-- <td>Order 1</td>
-          <td>11/10 11:00</td>
-          <td><a href="#" class="btn btn-danger btn-block">
-           Cancel
-          </a></td>
-        </tr>
-        <tr>
-          <td>Order 2</td>
-          <td>11/10 14:00</td>
-          <td><a href="#" class="btn btn-danger btn-block">
-           Cancel
-          </a></td>
-        </tr> -->
-      </tbody>
-
-<!-- <div class="col-md-3"> -->
-<div class="card">
-    <thead class="thead-dark">
-      <tr>
-        <th>
-          Order
-        </th>
-        <th>History</th><th></th><th></th><th></th>
-      </tr>
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Quantity</th>
-        <th></th>
-      </tr>
-    </thead>
-    {% if user_order_history %}
-      {% for orders in user_order_history %}
-      <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ orders.item.item_name }}</td>
-        <td>{{ orders.created_at }}</td>
-        <td>{{ orders.quantity }}</td>
-        <td></td>
-      </tr>
-      {% endfor %}
-      <!-- <td>Order 1</td>
-      <td>11/10 11:00</td>
-      <td><a href="#" class="btn btn-danger btn-block">
-       Cancel
-      </a></td>
-    </tr> -->
-    {% endif %}
-    <!-- <td>Order 1</td>
-    <td>11/10 11:00</td>
-    <td><a href="#" class="btn btn-danger btn-block">
-     Cancel
-    </a></td>
-  </tr>
-  <tr>
-    <td>Order 2</td>
-    <td>11/10 14:00</td>
-    <td><a href="#" class="btn btn-danger btn-block">
-     Cancel
-    </a></td>
-  </tr> -->
-</tbody>
-  </table>
-</div>
-</div>
-
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <div style="overflow-y: scroll; width: 100%; height: 300px;">
+                  {% if user_orders %}
+                  <table style="width: 100%; padding: 0px;">
+                      {% for orders in user_orders %}
+                      <tr>
+                        <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                        <td style="width: 132px; font-weight:normal;">{{ orders.item.item_name }}</td>
+                        <td style="width: 132px; font-weight:normal;">{{ orders.timestamp }}</td>
+                        <td style="width: 132px; font-weight:normal;">{{ orders.quantity }}</td>
+                        <td style="width: 132px; font-weight:normal;"><a href="{% url 'orders:delete_order' orders.pk %}" class="btn btn-danger btn-block">
+                         Cancel
+                        </a></td>
+                      </tr>
+                      {% endfor %}
+                      </table>
+                      {% endif %}
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div class="card-header" style="width: 100%;">
+            <h4><center>Orders History</center></h4>
+          </div>
+          <table class="table table-striped" style="width: 100%; padding: 0px;">
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <table style="width: 100%; padding: 0px;">
+                  <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                    <tr style="width: 100%; padding: 0px;">
+                      <th style="width: 55px; font-weight:normal;">#</th>
+                      <th style="width: 132px; font-weight:normal;">Name</th>
+                      <th style="width: 132px; font-weight:normal;">Date</th>
+                      <th style="width: 132px; font-weight:normal;">Quantity</th>
+                    </tr>
+                  </thead>
+                </table>
+              </td>
+            </tr>
+            <tr style="width: 100%; padding: 0px;">
+              <td style="width: 100%; padding: 0px;">
+                <div style="overflow-y: scroll; width: 100%; height: 300px;">
+                  <table style="width: 100%; padding: 0px;">
+                    {% if user_order_history %}
+                      {% for orders in user_order_history %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ orders.item.item_name }}</td>
+                        <td>{{ orders.timestamp }}</td>
+                        <td>{{ orders.quantity }}</td>
+                        <td></td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
       </div>
     </div>
 
-      </div>
-    </div>
-  </center>
+  <!-- </center> -->
   </section>
 
   <!-- FOOTER -->

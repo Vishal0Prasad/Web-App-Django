@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^orders/', include('orders.urls'), name = 'orders'),
     url(r'^medical/', include('medical.urls'), name = 'medical'),
     url(r'^hostel/',include('hostel.urls'),name='hostel'),
+    url(r'^mess/',include('mess.urls'),name='mess'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

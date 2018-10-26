@@ -35,13 +35,13 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="posts.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="categories.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="index.html" class="nav-link active">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link active">Medical</a>
           </li>
           <li class="nav-item px-2">
             <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
@@ -51,20 +51,25 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-              <i class="fas fa-user"></i> Welcome Brad
+              <i class="fas fa-user"></i> Welcome {{request.user}}
             </a>
             <div class="dropdown-menu">
-              <a href="profile.html" class="dropdown-item">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="settings.html" class="dropdown-item">
-                <i class="fas fa-cog"></i> Settings
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
+                <i class="fas fa-cog"></i> Manual Order
               </a>
             </div>
           </li>
           <li class="nav-item">
-            <a href="login.html" class="nav-link">
+            <a href="{% url 'accounts:student_logout' %}" class="nav-link">
               <i class="fas fa-user-times"></i> Logout
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'admin:index' %}" class="nav-link">
+              <i></i> Admin
             </a>
           </li>
         </ul>

@@ -14,21 +14,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ComplaintRegister',
-            fields=[
-                ('idcomplaint_register', models.IntegerField(primary_key=True, serialize=False)),
-                ('complaint', models.CharField(blank=True, max_length=200, null=True)),
-                ('room_no', models.IntegerField(blank=True, null=True)),
-                ('completed', models.IntegerField(blank=True, null=True)),
-                ('timestamp', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateField(blank=True, null=True)),
-                ('created_by', models.CharField(blank=True, max_length=45, null=True)),
-                ('modified_at', models.DateField(blank=True, null=True)),
-                ('modified_by', models.CharField(blank=True, max_length=45, null=True)),
-                ('student', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='accounts.Student')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Courrier',
             fields=[
                 ('idcourrier', models.IntegerField(primary_key=True, serialize=False)),

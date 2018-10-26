@@ -1,0 +1,55 @@
+<thead class="thead-dark">
+  <tr>
+    <th>#</th>
+    <th>Doctor</th>
+    <th>Time</th>
+  </tr>
+</thead>
+<tbody>
+  {% if len != 0 %}
+
+    {% csrf_token %}
+    <fieldset class="form-group">
+      {% for doc in doctors %}
+      <tr>
+      <td>
+        {{ forloop.counter }}
+      </td>
+      <td>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" name="radio" value="{{ doc.id }}"> {{ doc.doctor_name }}
+        </label>
+      </div>
+    </td>
+    <td>
+      {{ doc.date }}, {{ doc.available_from }} - {{ doc.available_till }}
+    </td>
+  </tr>
+  {% endfor %}
+    </fieldset>
+    <tr>
+      <td>
+
+      </td>
+      <td>
+        <input type="hidden" name="mydate" id="mydate" value="{{ date }}" />
+        <input type="hidden" name="mytime" id="mytime" value="{{ time }}" />
+      </td>
+      <td>
+        <button type="submit" class="btn btn-primary">Book Appointment</button>
+      </td>
+    </tr>
+
+  {% else %}
+  <tr>
+    <td>
+      No doctors available
+      </td>
+      <td>
+        </td>
+        <td>
+          </td>
+  </tr>
+  {% endif %}
+</tbody>

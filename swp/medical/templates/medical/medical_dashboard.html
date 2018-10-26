@@ -13,8 +13,13 @@
   <title>B-04 Frontend</title>
 
   <!-- Date Picker -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-
+  <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+  <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+  <style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+  <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+  <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -30,13 +35,13 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="posts.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="categories.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="index.html" class="nav-link active">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link active">Medical</a>
           </li>
           <li class="nav-item px-2">
             <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
@@ -46,20 +51,25 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item dropdown mr-3">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-              <i class="fas fa-user"></i> Welcome Brad
+              <i class="fas fa-user"></i> Welcome {{request.user}}
             </a>
             <div class="dropdown-menu">
-              <a href="profile.html" class="dropdown-item">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="settings.html" class="dropdown-item">
-                <i class="fas fa-cog"></i> Settings
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
+                <i class="fas fa-cog"></i> Manual Order
               </a>
             </div>
           </li>
           <li class="nav-item">
-            <a href="login.html" class="nav-link">
+            <a href="{% url 'accounts:student_logout' %}" class="nav-link">
               <i class="fas fa-user-times"></i> Logout
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'admin:index' %}" class="nav-link">
+              <i></i> Admin
             </a>
           </li>
         </ul>
@@ -117,62 +127,31 @@
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
+                  <th>Announcement</th>
                   <th>Date</th>
-                  <th></th>
+
                 </tr>
               </thead>
               <tbody>
+
                 <tr>
-                  <td>1</td>
-                  <td>Announcement One</td>
-                  <td>May 10 2018</td>
-                  <td>
-                    <a href="details.html" class="btn btn-secondary">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                  </td>
+                  <td colspan="3">
+                    <div style="overflow-y: scroll;height:{{ scrollL_announce }};">
+                      {% if announcements %}
+                  <table>
+                    {% for announcement in announcements %}
+                    <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><strong>{{ announcement.announcement_title }}</strong><br />{{ announcement.announcement }}</td>
+                  <td>{{ announcement.timestamp }}</td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Announcement Two</td>
-                  <td>May 11 2018</td>
-                  <td>
-                    <a href="details.html" class="btn btn-secondary">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                  </td>
+                  {% endfor %}
+                </table>
+                {% endif %}
+              </div>
+                </td>
                 </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Announcement Three</td>
-                  <td>May 13 2018</td>
-                  <td>
-                    <a href="details.html" class="btn btn-secondary">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Announcement Four</td>
-                  <td>May 15 2018</td>
-                  <td>
-                    <a href="details.html" class="btn btn-secondary">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Announcement Five</td>
-                  <td>May 17 2018</td>
-                  <td>
-                    <a href="details.html" class="btn btn-secondary">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a>
-                  </td>
-                </tr>
+
               </tbody>
             </table>
             <table class="table table-striped">
@@ -185,34 +164,32 @@
                 </tr>
               </thead>
               <tbody>
-                <form action="#" method='post'>
+                <div class="bootstrap-iso">
+                <form action="" method='post' id="myform">
+                  {% csrf_token %}
                   <tr>
                     <td>
-                      Date &ensp;<input id="datepicker" class="form-control" />
+                      Date &ensp;<!--<div class="form-group"><input id="datepicker" class="form-control" name="kp"/></div>-->
+                      <input type="text" id="datepicker" class="form-control" name="kp" />
+
                     </td>
                     <td>
-                    Time &ensp;<input type='text' class="form-control"/>
+                    Time &ensp;<!--<div class="form-group"><input id="timepicker" class="form-control" name="timepicker"/></div>-->
+                    <input type="text" id="timepicker" class="form-control" name="timepicker" />
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      Name &ensp;<input type='text' class="form-control" />
-                    </td>
-                    <td>
-                      Age &ensp;<input type='text' class="form-control" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                        Gender &ensp;<input type='text' class="form-control" />
-                    </td>
-                    <td>
-                      Location &ensp;<input type='text' class="form-control"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Info &ensp;<input type='text' class="form-control"/>
+                      Specialist &ensp;
+                        <select id="specialisation" class="form-control" name="specialisation">
+                          <option value="General Physician" selected>General Physician</option>
+                          <option value="Dermatologist">Dermatologist</option>
+                          <option value="Neurologist">Neurologist</option>
+                          <option value="Cardiologist">Cardiologist</option>
+                          <option value="Dentist">Dentist</option>
+                          <option value="ENT">ENT</option>
+                        </select>
+
                     </td>
                     <td>
 
@@ -228,67 +205,16 @@
 
                   </tr>
                 </form>
+              </div>
               </tbody>
             </table>
             <div class="card-header">
               <h4>Search Results</h4>
             </div>
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>#</th>
-                  <th>Doctor</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                <form>
-                  <fieldset class="form-group">
-                    <tr>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input type="radio" class="form-check-input" value="doctor1" checked> Doctor 1
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    11 Oct 2018, 12:00
-                  </td>
-                </tr>
-                <tr>
-                <td>
-                  2
-                </td>
-                <td>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input" value="doctor2"> Doctor 2
-                    </label>
-                  </div>
-              </td>
-              <td>
-                11 Oct 2018, 13:00
-              </td>
-            </tr>
-                  </fieldset>
-                  <tr>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-                      <button type="submit" class="btn btn-primary">Book Appointment</button>
-                    </td>
-                  </tr>
-                </form>
-              </tbody>
+            <form action="{% url 'medical:bookAppointment' %}" method="post">
+            <table id="searchTable" class="table table-striped" style="visibility:hidden">
             </table>
+          </form>
           </div>
         </div>
         <!-- <div class="col-md-3">
@@ -467,20 +393,67 @@
   </div>
 
 
-  <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
     crossorigin="anonymous"></script>
   <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
 
-  <script>
+
+
+
+
+
+
+<script>
     // Get the current year for the copyright
     $('#year').text(new Date().getFullYear());
 
     CKEDITOR.replace('editor1');
   </script>
+  <script>
+ $(function() {
+    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+          $('#datepicker').datepicker({
+              uiLibrary: 'bootstrap4',
+              minDate: today,
+              format: 'yyyy-mm-dd',
+          });
+ });
+ $('#timepicker').timepicker({
+     uiLibrary: 'bootstrap4'
+ });
+ function submitForm(){
+   var date=$('#datepicker').val();
+   var time=$('#timepicker').val();
+   console.log(date,time);
+ }
+ $('#myform').submit(function(e){
+   e.preventDefault();
+   var date=$('#datepicker').val();
+   var time=$('#timepicker').val();
+   var specialisation=$('#specialisation :selected').text();
+   console.log(specialisation);
+   $.ajax({
+     type:'POST',
+     url:'{% url "medical:searchDoctors" %}',
+     data:{
+       date:date,
+       time:time,
+       specialisation:specialisation,
+       csrfmiddlewaretoken:'{{ csrf_token }}',
+     },
+     dataType: 'html',
+   success:function(data){
+     $(document).ready(function(){
+       console.log("it worked");
+       $("#searchTable").css('visibility','visible');
+       $("#searchTable").html(data);
+    });
+   }
+ });
+});
+    </script>
 </body>
 
 </html>

@@ -26,16 +26,16 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav">
           <li class="nav-item px-2">
-            <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link active">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
             <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
@@ -48,10 +48,10 @@
               <i class="fas fa-user"></i> Welcome {{request.user}}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item" target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
-              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+              <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                 <i class="fas fa-cog"></i> Important Contacts
               </a>
             </div>
@@ -90,114 +90,143 @@
   </p>
   </section>
   <section id="posts">
-    <center><div class="container">
       <div class="row">
-        <div class="col-md-9">
-          <div class="card">
-            <div class="card-header">
-              <h4>Announcements</h4>
-            </div>
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Hostel</th>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>(Top - 5)</th>
+    <div class="col-md-9" style="width:800px; margin:0 auto;">
+      <div class="card-header" style="width: 104%;">
+        <h4><center>Announcements</center></h4>
+      </div>
+    <div class="card" style=" border: 0px;align:left;">
+      <div class="card-header" style="width: 104%;">
+        <h4><center>Hostel</center></h4>
+      </div>
+      <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+        <tr style="width: 100%; padding: 0px;  border: 0px;">
+          <td style="width: 100%; padding: 0px;">
+            <table style="width: 130%; padding: 0px;  border: 0px;">
+              <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                <tr style="width: 100%; padding: 0px;">
+                  <th style="width: 55px; font-weight:normal;">#</th>
+                  <th style="width: 132px; font-weight:normal;">Title</th>
+                  <th style="width: 132px; font-weight:normal;">Date</th>
+                  <th style="width: 132px; font-weight:normal;">Details</th>
                 </tr>
               </thead>
-              <tbody>
-                {% if hostel_announcements %}
+
+            </table>
+          </td>
+        </tr>
+        <tr style="width: 100%; padding: 0px;">
+          <td style="width: 100%; padding: 0px;">
+            <div style="overflow-y: scroll; width: 130%; height: 200px">
+              {% if hostel_announcements %}
+              <table style="width: 100%; padding: 0px;">
                   {% for data in hostel_announcements %}
                   <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{data.announcement_title}}</td>
-                    <td>{{data.created_at}}</td>
-
-                    <td><a href="{% url 'dashboard:announcement_detail' 1 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
+                    <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                    <td style="width: 132px; font-weight:normal;">{{data.announcement_title}}</td>
+                    <td style="width: 132px; font-weight:normal;">{{data.timestamp}}</td>
+                    <td style="width: 132px; font-weight:normal;"><a href="{% url 'dashboard:announcement_detail' 1 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
                       <i class="fas fa-angle-double-right"></i> Details
                     </a></td>
                   </tr>
                   {% endfor %}
-                  {% else %}
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                </table>
                 {% endif %}
-              </tbody>
-            </table>
-
-            <!--Mess-->
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Mess</th>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>(Top - 5)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% if mess_announcements %}
-                  {% for data in mess_announcements %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{data.announcement_title}}</td>
-                    <td>{{data.created_at}}</td>
-
-                    <td><a href="{% url 'dashboard:announcement_detail' 2 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a></td>
-                  </tr>
-                  {% endfor %}
-                  {% else %}
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                {% endif %}
-              </tbody>
-            </table>
-
-            <!--Medical-->
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Medical</th>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>(Top - 5)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% if medical_announcements %}
-                  {% for data in medical_announcements %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{data.announcement_title}}</td>
-                    <td>{{data.created_at}}</td>
-
-                    <td><a href="{% url 'dashboard:announcement_detail' 3 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
-                      <i class="fas fa-angle-double-right"></i> Details
-                    </a></td>
-                  </tr>
-                  {% endfor %}
-                  {% else %}
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                {% endif %}
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-
-      </div>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
-  </center>
+  </div>
+      <div class="col-md-9" style="width:800px; margin:0 auto;">
+      <div class="card" style=" border: 0px;align:left;">
+        <div class="card-header" style="width: 104%;">
+          <h4><center>Mess</center></h4>
+        </div>
+        <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+          <tr style="width: 100%; padding: 0px;  border: 0px;">
+            <td style="width: 100%; padding: 0px;">
+              <table style="width: 130%; padding: 0px;  border: 0px;">
+                <thead class="thead-dark" style="width: 100%; padding: 0px;">
+                  <tr style="width: 100%; padding: 0px;">
+                    <th style="width: 55px; font-weight:normal;">#</th>
+                    <th style="width: 132px; font-weight:normal;">Title</th>
+                    <th style="width: 132px; font-weight:normal;">Date</th>
+                    <th style="width: 132px; font-weight:normal;">Details</th>
+                  </tr>
+                </thead>
+
+              </table>
+            </td>
+          </tr>
+          <tr style="width: 100%; padding: 0px;">
+            <td style="width: 100%; padding: 0px;">
+              <div style="overflow-y: scroll; width: 130%; height: 200px">
+                {% if mess_announcements %}
+                <table style="width: 100%; padding: 0px;">
+                    {% for data in mess_announcements %}
+                    <tr>
+                      <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                      <td style="width: 132px; font-weight:normal;">{{data.announcement_title}}</td>
+                      <td style="width: 132px; font-weight:normal;">{{data.timestamp}}</td>
+                      <td style="width: 132px; font-weight:normal;"><a href="{% url 'dashboard:announcement_detail' 2 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
+                        <i class="fas fa-angle-double-right"></i> Details
+                      </a></td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                  {% endif %}
+              </div>
+            </td>
+          </tr>
+        </table>
+  </div>
+</div>
+  <div class="col-md-9" style="width:800px; margin:0 auto;">
+  <div class="card" style=" border: 0px;align:left;">
+    <div class="card-header" style="width: 104%;">
+      <h4><center>Medical</center></h4>
+    </div>
+    <table class="table table-striped" style="align:left; width: 80%; padding: 0px;  border: 0px; ">
+      <tr style="width: 100%; padding: 0px;  border: 0px;">
+        <td style="width: 100%; padding: 0px;">
+          <table style="width: 130%; padding: 0px;  border: 0px;">
+            <thead class="thead-dark" style="width: 100%; padding: 0px;">
+              <tr style="width: 100%; padding: 0px;">
+                <th style="width: 55px; font-weight:normal;">#</th>
+                <th style="width: 132px; font-weight:normal;">Title</th>
+                <th style="width: 132px; font-weight:normal;">Date</th>
+                <th style="width: 132px; font-weight:normal;">Details</th>
+              </tr>
+            </thead>
+
+          </table>
+        </td>
+      </tr>
+      <tr style="width: 100%; padding: 0px;">
+        <td style="width: 100%; padding: 0px;">
+          <div style="overflow-y: scroll; width: 130%; height: 200px">
+            {% if medical_announcements %}
+            <table style="width: 100%; padding: 0px;">
+                {% for data in medical_announcements %}
+                <tr>
+                  <td style="width: 55px; font-weight:normal;">{{ forloop.counter }}</td>
+                  <td style="width: 132px; font-weight:normal;">{{data.announcement_title}}</td>
+                  <td style="width: 132px; font-weight:normal;">{{data.timestamp}}</td>
+                  <td style="width: 132px; font-weight:normal;"><a href="{% url 'dashboard:announcement_detail' 3 data.pk %}" class="btn btn-secondary" target="{{ forloop.counter }}">
+                    <i class="fas fa-angle-double-right"></i> Details
+                  </a></td>
+                </tr>
+                {% endfor %}
+              </table>
+              {% endif %}
+          </div>
+        </td>
+      </tr>
+    </table>
+</div>
+</div>
+</div>
   </section>
 
   <!-- FOOTER -->

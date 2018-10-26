@@ -50,11 +50,13 @@ def announcement_detail(request, flag, pk):
 
 @login_required
 def upload_image(request):
+    a  = ""
     if len(request.FILES) > 0:
         if request.FILES['myfile']:
             student = get_object_or_404(Student, user = request.user)
             myfile = request.FILES['myfile']
             student.avatar = 'media/images/'+myfile.name
+            a = student.bio
             student.save()
     return redirect('/dashboard/profile')
 
@@ -63,7 +65,8 @@ def edit_profile(request):
     if request.method == 'POST':
         form = EditUserNameForm(data = request.POST, instance=request.user)
         student = get_object_or_404(Student, user = request.user)
-        if request.POST.get("editor") != '' and student.bio != request.POST.get("editor"):
+        bio_post = request.POST.get("editor")
+        if bio_post != '' and student.bio != bio_post:
             student.bio = request.POST.get("editor")
             student.save()
         if form.is_valid():
@@ -75,22 +78,23 @@ def edit_profile(request):
         return render(request, 'dashboard/edit_profile.html', {
             'form': form,
             'student': student,
+            'bio': student.bio,
         })
 
-@login_required
-class BasicUploadView(View):
-    def get(self, request):
-        student = get_object_or_404(Student, user = request.user)
-        return render(self.request, 'photos/basic_upload/index.html', {'avatar': student.avatar})
-
-    def post(self, request):
-        form = PhotoForm(self.request.POST, self.request.FILES)
-        if form.is_valid():
-            photo = form.save()
-            data = {'is_valid': True, 'name': photo.file.name, 'url': photo.file.url}
-        else:
-            data = {'is_valid': False}
-        return JsonResponse(data)
+# @login_required
+# class BasicUploadView(View):
+#     def get(self, request):
+#         student = get_object_or_404(Student, user = request.user)
+#         return render(self.request, 'photos/basic_upload/index.html', {'avatar': student.avatar})
+#
+#     def post(self, request):
+#         form = PhotoForm(self.request.POST, self.request.FILES)
+#         if form.is_valid():
+#             photo = form.save()
+#             data = {'is_valid': True, 'name': photo.file.name, 'url': photo.file.url}
+#         else:
+#             data = {'is_valid': False}
+#         return JsonResponse(data)
 
 @login_required
 def contacts(request):

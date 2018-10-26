@@ -25,16 +25,16 @@
             <a href="{% url 'dashboard:dashboard_index' %}" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item px-2">
-            <a href="hostel.html" class="nav-link">Hostel</a>
+            <a href="{% url 'hostel:hostel_dashboard' %}" class="nav-link">Hostel</a>
           </li>
           <li class="nav-item px-2">
-            <a href="mess.html" class="nav-link">Mess</a>
+            <a href="{% url 'mess:mess_dashboard' %}" class="nav-link">Mess</a>
           </li>
           <li class="nav-item px-2">
-            <a href="medical.html" class="nav-link active">Medical</a>
+            <a href="{% url 'medical:medical_dashboard' %}" class="nav-link">Medical</a>
           </li>
           <li class="nav-item px-2">
-            <a href="{% url 'orders:orders_index' %}" class="nav-link">Order</a>
+            <a href="{% url 'orders:orders_index' %}" class="nav-link active">Order</a>
           </li>
         </ul>
 
@@ -44,11 +44,11 @@
               <i class="fas fa-user"></i> Welcome {{request.user}}
             </a>
             <div class="dropdown-menu">
-              <a href="{% url 'dashboard:profile' %}" class="dropdown-item" target="2">
+              <a href="{% url 'dashboard:profile' %}" class="dropdown-item">
                 <i class="fas fa-user-circle"></i> Profile
               </a>
               {% if items %}
-                <a href="{% url 'dashboard:contacts' %}" class="dropdown-item" target="3">
+                <a href="{% url 'dashboard:contacts' %}" class="dropdown-item">
                   <i class="fas fa-cog"></i>Order Placed
                 </a>
               {% endif %}
@@ -100,18 +100,68 @@
       <div class="row">
         <div class="col-md-9">
           <div class="card">
-            {% if items %}
-              <div class="card-header">
-                <h4>Order Placed</h4>
-              </div>
-            {% else %}
+            {% if not_ordered %}
             <div class="card-header">
-              <h4>Nothing in the database</h4>
+              <h4>The following orders are out-of-stock:</h4>
             </div>
+            <table style="align:left" class="table table-striped" align="left">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Out of stock Items:</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in not_ordered %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{order.item_name}}</td>
+                  <td>{{order.item_type}}</td>
+                  <td></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
             {% endif %}
-          </div>
-        </div>
-        <div class="col-md-3">
+            {% if ordered_items %}
+            <div class="card-header">
+              <h4>The following orders have been ordered:</h4>
+            </div>
+            <table style="align:left" class="table table-striped" align="left">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Ordered Items:</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in ordered_items %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{order.item_name}}</td>
+                  <td>{{order.item_type}}</td>
+                  <td></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
         </div>
       </div>
     </div>
